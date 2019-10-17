@@ -11,18 +11,28 @@ export default class Captcha {
       throw new Error('请填写appId')
     }
   }
-  showCaptcha () {
+  showCaptcha (options) {
     let id = (new Date()).getTime()
     return new Promise((resolve, reject) => {
-      console.log(this)
       this.captcha = new window.TencentCaptcha(this.o.appId, function(res) {
         if (res.ret > 0) {
           // 用户自行关闭
-          let err = new Error('用户自行关闭')
-          err.res = res
-          reject(err)
+          if (options.error) {
+            const err = {
+              message: '用户自行关闭'
+            }
+            options.error(err)
+          } else {
+            let err = new Error('用户自行关闭')
+            err.res = res
+            reject(err)
+          }
         } else {
-          resolve(res)
+          if (options.success && typeof options.success === 'function') {
+            options.success(res)
+          } else {
+            resolve(res)
+          }
         }
       }, { bizState: id })
       this.captcha.show()
