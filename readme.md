@@ -1,7 +1,11 @@
 # easy-tencent-captcha
 专门针对腾讯防水墙做了一些简单的封装,理论上react和vue都可以用.
 ## 使用方式
+```bash
+npm i easy-tencent-captcha --save
+```
 ```javascript
+import Captcha from 'easy-tencent-captcha'
 const captcha = new Captcha({
   appId: 'xxxxx'
 })
