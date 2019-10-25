@@ -17,7 +17,7 @@ export default class Captcha {
       this.captcha = new window.TencentCaptcha(this.o.appId, function(res) {
         if (res.ret > 0) {
           // 用户自行关闭
-          if (options.error) {
+          if (options && options.error && typeof options.success === 'function') {
             const err = {
               message: '用户自行关闭'
             }
@@ -28,11 +28,10 @@ export default class Captcha {
             reject(err)
           }
         } else {
-          if (options.success && typeof options.success === 'function') {
+          if (options && options.success && typeof options.success === 'function') {
             options.success(res)
-          } else {
-            resolve(res)
           }
+          resolve(res)
         }
       }, { bizState: id })
       this.captcha.show()
