@@ -1,5 +1,5 @@
 export default class Captcha {
-  constructor (options) {
+  constructor(options) {
     if (!window.TencentCaptcha) {
       require('./lib/tcaptcha')
     }
@@ -11,10 +11,11 @@ export default class Captcha {
       throw new Error('请填写appId')
     }
   }
+
   showCaptcha (options) {
-    let id = (new Date()).getTime()
+    const id = (new Date()).getTime()
     return new Promise((resolve, reject) => {
-      this.captcha = new window.TencentCaptcha(this.o.appId, function(res) {
+      this.captcha = new window.TencentCaptcha(this.o.appId, function (res) {
         if (res.ret > 0) {
           // 用户自行关闭
           if (options && options.error && typeof options.success === 'function') {
@@ -23,7 +24,7 @@ export default class Captcha {
             }
             options.error(err)
           } else {
-            let err = new Error('用户自行关闭')
+            const err = new Error('用户自行关闭')
             err.res = res
             reject(err)
           }
@@ -37,24 +38,26 @@ export default class Captcha {
       this.captcha.show()
     })
   }
+
   closeCaptcha () {
     return new Promise((resolve, reject) => {
       if (this.captcha) {
         this.captcha.destroy()
         resolve()
       } else {
-        let err = new Error('没有实例')
+        const err = new Error('没有实例')
         reject(err)
       }
     })
   }
+
   getTicket () {
     return new Promise((resolve, reject) => {
       if (this.captcha) {
-        let res = this.captcha.getTicket()
+        const res = this.captcha.getTicket()
         resolve(res)
       } else {
-        let err = new Error('没有实例')
+        const err = new Error('没有实例')
         reject(err)
       }
     })
