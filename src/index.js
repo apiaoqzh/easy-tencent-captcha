@@ -4,7 +4,7 @@ export default class Captcha {
       require('./lib/tcaptcha')
     }
     this.o = {
-      appId: options.appId
+      appId: String(options.appId)
     }
     this.captcha = null
     if (!this.o.appId) {
@@ -12,7 +12,7 @@ export default class Captcha {
     }
   }
 
-  showCaptcha (options) {
+  showCaptcha (options = {}) {
     const id = (new Date()).getTime()
     return new Promise((resolve, reject) => {
       this.captcha = new window.TencentCaptcha(this.o.appId, function (res) {
@@ -23,11 +23,10 @@ export default class Captcha {
               message: '用户自行关闭'
             }
             options.error(err)
-          } else {
-            const err = new Error('用户自行关闭')
-            err.res = res
-            reject(err)
           }
+          const err = new Error('用户自行关闭')
+          err.res = res
+          reject(err)
         } else {
           if (options && options.success && typeof options.success === 'function') {
             options.success(res)

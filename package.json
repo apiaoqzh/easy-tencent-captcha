@@ -1,6 +1,6 @@
 {
   "name": "easy-tencent-captcha",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "plugins for tencent-captcha",
   "main": "./dist/easy-tencent-captcha.min.js",
   "scripts": {
